@@ -1,0 +1,743 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Alone Flyer's Learning Bill</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: "Roboto", sans-serif;
+    }
+    .oswald {
+      font-family: "Oswald", sans-serif;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col justify-between">
+  <div>
+    <div class="flex justify-between items-center border-b-8 border-blue-700">
+      <div class="flex">
+        <div class="w-20 h-16 bg-blue-800"></div>
+        <div class="w-28 h-16 bg-blue-400"></div>
+        <div class="w-28 h-16 bg-blue-600"></div>
+      </div>
+      <div class="w-24 h-24 mr-6"></div>
+    </div>
+    <div class="px-6 pt-6">
+      <h1 class="oswald text-blue-600 text-3xl leading-tight tracking-wide">
+        ALONE FLYER'S LEARNING
+      </h1>
+      <p class="text-black text-lg leading-snug mt-1">
+        Adress: #39, Malviya Colony, Guda Kallan<br />
+        Sojat (306103)<br />
+        Contact: 8696602827 / 9772474323
+      </p>
+      <form id="billForm" class="mt-6 space-y-6 text-blue-600 text-lg">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-2">
+          <label class="min-w-[180px]" for="studentName">Name of Student :</label>
+          <input
+            class="border-b border-blue-400 flex-grow focus:outline-none focus:border-blue-600"
+            id="studentName"
+            name="studentName"
+            type="text"
+            required
+          />
+        </div>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-2">
+          <label class="min-w-[80px]" for="class">Class :</label>
+          <select
+            id="class"
+            name="class"
+            class="border-b border-blue-400 w-40 focus:outline-none focus:border-blue-600 text-blue-600"
+            required
+          >
+            <option value="" disabled selected>Select Class</option>
+            <option value="Nursery">Nursery</option>
+            <option value="LKG">LKG</option>
+            <option value="UKG">UKG</option>
+            <option value="1st">1st</option>
+            <option value="2nd">2nd</option>
+            <option value="3rd">3rd</option>
+            <option value="4th">4th</option>
+            <option value="5th">5th</option>
+            <option value="6th">6th</option>
+            <option value="7th">7th</option>
+            <option value="8th">8th</option>
+            <option value="9th">9th</option>
+            <option value="10th">10th</option>
+            <option value="11th">11th</option>
+            <option value="12th">12th</option>
+          </select>
+          <label class="min-w-[60px] ml-4" for="monthFrom">Month</label>
+          <input
+            aria-label="From date"
+            class="border-b border-blue-400 w-36 focus:outline-none focus:border-blue-600"
+            id="monthFrom"
+            name="monthFrom"
+            placeholder="From"
+            type="date"
+            required
+          />
+          <span class="mx-2 text-blue-600 select-none">to</span>
+          <input
+            aria-label="To date"
+            class="border-b border-blue-400 w-36 focus:outline-none focus:border-blue-600"
+            id="monthTo"
+            name="monthTo"
+            placeholder="To"
+            type="date"
+            required
+          />
+          <label class="min-w-[60px] ml-4" for="monthCount">Count</label>
+          <input
+            aria-label="Count of months"
+            class="border-b border-blue-400 w-20 focus:outline-none focus:border-blue-600 text-center"
+            id="monthCount"
+            name="monthCount"
+            type="number"
+            min="0"
+            max="12"
+            value="0"
+            readonly
+            required
+          />
+        </div>
+
+        <table
+          id="itemsTable"
+          class="w-full border border-blue-600 mt-6 text-blue-600 text-lg border-collapse"
+        >
+          <thead>
+            <tr>
+              <th class="border border-blue-600 px-3 py-1 text-center w-16">S.No</th>
+              <th class="border border-blue-600 px-3 py-1 text-center">Discription</th>
+              <th class="border border-blue-600 px-3 py-1 text-center w-20">Month</th>
+              <th class="border border-blue-600 px-3 py-1 text-center w-20">Fees</th>
+              <th class="border border-blue-600 px-3 py-1 text-center w-24">Ammount</th>
+            </tr>
+          </thead>
+          <tbody id="itemsBody" class="relative">
+            <tr>
+              <td class="border border-blue-600 px-2 py-1 text-center">
+                <input
+                  type="number"
+                  min="1"
+                  class="w-full text-center border-none focus:ring-0 focus:outline-none text-blue-600"
+                  name="sno[]"
+                  value="1"
+                  required
+                />
+              </td>
+              <td class="border border-blue-600 px-2 py-1">
+                <input
+                  type="text"
+                  class="w-full border-none focus:ring-0 focus:outline-none text-blue-600"
+                  name="description[]"
+                  required
+                />
+              </td>
+              <td class="border border-blue-600 px-2 py-1">
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  class="w-full text-center border-none focus:ring-0 focus:outline-none text-blue-600"
+                  name="month[]"
+                  value="0"
+                  required
+                />
+              </td>
+              <td class="border border-blue-600 px-2 py-1">
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  class="w-full text-center border-none focus:ring-0 focus:outline-none text-blue-600"
+                  name="fees[]"
+                  value="0"
+                  required
+                />
+              </td>
+              <td class="border border-blue-600 px-2 py-1">
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  class="w-full text-center border-none focus:ring-0 focus:outline-none text-blue-600"
+                  name="amount[]"
+                  value="0"
+                  readonly
+                />
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="border border-blue-600" colspan="3"></td>
+              <td class="border border-blue-600 text-right pr-3 font-normal">Total</td>
+              <td
+                class="border border-blue-600 text-center font-semibold text-blue-700"
+                id="totalAmount"
+              >
+                0
+              </td>
+            </tr>
+            <tr>
+              <td class="border border-blue-600 text-right pr-3 font-normal" colspan="4">
+                Discount (%)
+              </td>
+              <td class="border border-blue-600 px-2 py-1">
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                  id="discount"
+                  name="discount"
+                  value="0"
+                  class="w-full text-center border-none focus:ring-0 focus:outline-none text-blue-600"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td class="border border-blue-600" colspan="3"></td>
+              <td class="border border-blue-600 text-right pr-3 font-semibold">Final Total</td>
+              <td
+                class="border border-blue-600 text-center font-semibold text-blue-700"
+                id="finalTotalAmount"
+              >
+                0
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <button
+          type="button"
+          id="addRowBtn"
+          class="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Add Row
+        </button>
+
+        <div
+          class="border border-blue-600 border-t-0 mt-0 text-blue-600 text-lg px-3 py-2"
+          id="rupeesWords"
+        >
+          Rupees in Words:
+        </div>
+        <p class="text-blue-600 text-lg mt-4">
+          Comment:
+          <textarea
+            id="comment"
+            name="comment"
+            rows="3"
+            class="w-full border border-blue-400 rounded p-2 mt-1 text-blue-600 focus:outline-none focus:border-blue-600"
+          ></textarea>
+        </p>
+
+        <div class="flex justify-end mt-6">
+          <button
+            type="submit"
+            class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Generate PDF
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="flex justify-end px-6 pb-6">
+    <span class="text-blue-600 text-lg font-normal">Signature</span>
+  </div>
+
+  <script>
+    // Convert number to words (Indian Rupees)
+    function numberToWords(num) {
+      const a = [
+        "",
+        "One ",
+        "Two ",
+        "Three ",
+        "Four ",
+        "Five ",
+        "Six ",
+        "Seven ",
+        "Eight ",
+        "Nine ",
+        "Ten ",
+        "Eleven ",
+        "Twelve ",
+        "Thirteen ",
+        "Fourteen ",
+        "Fifteen ",
+        "Sixteen ",
+        "Seventeen ",
+        "Eighteen ",
+        "Nineteen ",
+      ];
+      const b = [
+        "",
+        "",
+        "Twenty ",
+        "Thirty ",
+        "Forty ",
+        "Fifty ",
+        "Sixty ",
+        "Seventy ",
+        "Eighty ",
+        "Ninety ",
+      ];
+
+      if ((num = num.toString()).length > 9) return "Overflow";
+      let n = ("000000000" + num)
+        .substr(-9)
+        .match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+      if (!n) return;
+      let str = "";
+      str +=
+        n[1] != 0
+          ? (a[Number(n[1])] || b[n[1][0]] + a[n[1][1]]) + "Crore "
+          : "";
+      str +=
+        n[2] != 0
+          ? (a[Number(n[2])] || b[n[2][0]] + a[n[2][1]]) + "Lakh "
+          : "";
+      str +=
+        n[3] != 0
+          ? (a[Number(n[3])] || b[n[3][0]] + a[n[3][1]]) + "Thousand "
+          : "";
+      str +=
+        n[4] != 0
+          ? (a[Number(n[4])] || b[n[4][0]] + a[n[4][1]]) + "Hundred "
+          : "";
+      str +=
+        n[5] != 0
+          ? (str != "" ? "and " : "") +
+            (a[Number(n[5])] || b[n[5][0]] + a[n[5][1]]) +
+            "Only "
+          : "";
+      return str.trim();
+    }
+
+    // Calculate days difference inclusive
+    function daysDiffInclusive(d1, d2) {
+      const diffTime = d2.getTime() - d1.getTime();
+      return Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    }
+
+    // Calculate days in month for a given date
+    function daysInMonth(date) {
+      return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    }
+
+    // Calculate month and day fraction between two dates for fee calculation
+    // Returns a decimal number representing months + fraction of days
+    function calculateMonthFraction(fromDate, toDate) {
+      if (toDate < fromDate) return 0;
+
+      // If same month and year, calculate fraction of days
+      if (
+        fromDate.getFullYear() === toDate.getFullYear() &&
+        fromDate.getMonth() === toDate.getMonth()
+      ) {
+        const totalDays = daysInMonth(fromDate);
+        const usedDays = daysDiffInclusive(fromDate, toDate);
+        return usedDays / totalDays;
+      }
+
+      // Different months or years
+      let monthsCount = 0;
+      let current = new Date(fromDate.getFullYear(), fromDate.getMonth(), 1);
+      const end = new Date(toDate.getFullYear(), toDate.getMonth(), 1);
+
+      // Count full months between fromDate and toDate month start
+      while (current < end) {
+        monthsCount++;
+        current.setMonth(current.getMonth() + 1);
+      }
+
+      // Calculate fraction for first month (from fromDate to end of that month)
+      const firstMonthDays = daysInMonth(fromDate);
+      const firstMonthUsedDays = firstMonthDays - fromDate.getDate() + 1;
+      const firstMonthFraction = firstMonthUsedDays / firstMonthDays;
+
+      // Calculate fraction for last month (from start of month to toDate)
+      const lastMonthDays = daysInMonth(toDate);
+      const lastMonthUsedDays = toDate.getDate();
+      const lastMonthFraction = lastMonthUsedDays / lastMonthDays;
+
+      // If fromDate and toDate are in consecutive months, total is sum of fractions
+      if (monthsCount === 0) {
+        return firstMonthFraction + lastMonthFraction;
+      }
+
+      // Otherwise total months = first month fraction + full months in between + last month fraction
+      return firstMonthFraction + (monthsCount - 1) + lastMonthFraction;
+    }
+
+    // Update month count input based on date range (rounded up to nearest integer)
+    function updateMonthCount() {
+      const fromInput = document.getElementById("monthFrom");
+      const toInput = document.getElementById("monthTo");
+      const monthCountInput = document.getElementById("monthCount");
+
+      if (fromInput.value && toInput.value) {
+        const fromDate = new Date(fromInput.value);
+        const toDate = new Date(toInput.value);
+        if (fromDate <= toDate) {
+          const monthFraction = calculateMonthFraction(fromDate, toDate);
+          const roundedCount = Math.ceil(monthFraction * 100) / 100; // round to 2 decimals
+          monthCountInput.value = roundedCount;
+          updateTableMonths(monthFraction);
+        } else {
+          monthCountInput.value = "";
+          updateTableMonths(0);
+        }
+      } else {
+        monthCountInput.value = "";
+        updateTableMonths(0);
+      }
+    }
+
+    // Update all month inputs in table to the count value (decimal allowed)
+    function updateTableMonths(count) {
+      const tbody = document.getElementById("itemsBody");
+      const monthInputs = tbody.querySelectorAll('input[name="month[]"]');
+      monthInputs.forEach((input) => {
+        input.value = count.toFixed(2);
+      });
+      updateAmounts();
+    }
+
+    // Update amount per row and total
+    function updateAmounts() {
+      const tbody = document.getElementById("itemsBody");
+      const rows = tbody.querySelectorAll("tr");
+      let total = 0;
+      rows.forEach((row) => {
+        const monthInput = row.querySelector('input[name="month[]"]');
+        const feesInput = row.querySelector('input[name="fees[]"]');
+        const amountInput = row.querySelector('input[name="amount[]"]');
+        const monthVal = parseFloat(monthInput.value) || 0;
+        const feesVal = parseFloat(feesInput.value) || 0;
+        const amount = monthVal * feesVal;
+        amountInput.value = amount.toFixed(2);
+        total += amount;
+      });
+      document.getElementById("totalAmount").textContent = total.toFixed(2);
+      updateFinalTotal();
+      document.getElementById("rupeesWords").textContent =
+        "Rupees in Words: " + numberToWords(Math.round(total));
+    }
+
+    // Update final total after discount
+    function updateFinalTotal() {
+      const total = parseFloat(document.getElementById("totalAmount").textContent) || 0;
+      const discountInput = document.getElementById("discount");
+      let discount = parseFloat(discountInput.value);
+      if (isNaN(discount) || discount < 0) discount = 0;
+      if (discount > 100) discount = 100;
+      discountInput.value = discount.toFixed(2);
+
+      const discountedAmount = total - (total * discount) / 100;
+      document.getElementById("finalTotalAmount").textContent = discountedAmount.toFixed(2);
+      document.getElementById("rupeesWords").textContent =
+        "Rupees in Words: " + numberToWords(Math.round(discountedAmount));
+    }
+
+    // Add new row
+    function addRow() {
+      const tbody = document.getElementById("itemsBody");
+      const rowCount = tbody.querySelectorAll("tr").length;
+      const tr = document.createElement("tr");
+
+      const monthCountVal = parseFloat(document.getElementById("monthCount").value) || 0;
+
+      tr.innerHTML = `
+        <td class="border border-blue-600 px-2 py-1 text-center">
+          <input type="number" min="1" class="w-full text-center border-none focus:ring-0 focus:outline-none text-blue-600" name="sno[]" value="${rowCount + 1}" required />
+        </td>
+        <td class="border border-blue-600 px-2 py-1">
+          <input type="text" class="w-full border-none focus:ring-0 focus:outline-none text-blue-600" name="description[]" required />
+        </td>
+        <td class="border border-blue-600 px-2 py-1">
+          <input type="number" min="0" step="0.01" class="w-full text-center border-none focus:ring-0 focus:outline-none text-blue-600" name="month[]" value="${monthCountVal.toFixed(2)}" required />
+        </td>
+        <td class="border border-blue-600 px-2 py-1">
+          <input type="number" min="0" step="0.01" class="w-full text-center border-none focus:ring-0 focus:outline-none text-blue-600" name="fees[]" value="0" required />
+        </td>
+        <td class="border border-blue-600 px-2 py-1">
+          <input type="number" min="0" step="0.01" class="w-full text-center border-none focus:ring-0 focus:outline-none text-blue-600" name="amount[]" value="0" readonly />
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      // Attach event listeners to new inputs
+      attachInputListeners(tr);
+      updateAmounts();
+    }
+
+    // Attach input event listeners to update amounts on change
+    function attachInputListeners(row) {
+      const monthInput = row.querySelector('input[name="month[]"]');
+      const feesInput = row.querySelector('input[name="fees[]"]');
+      const snoInput = row.querySelector('input[name="sno[]"]');
+
+      monthInput.addEventListener("input", updateAmounts);
+      feesInput.addEventListener("input", updateAmounts);
+      snoInput.addEventListener("input", () => {
+        // Ensure S.No is positive integer
+        if (snoInput.value < 1) snoInput.value = 1;
+      });
+    }
+
+    // Attach listeners to existing row inputs
+    function attachListenersToAllRows() {
+      const tbody = document.getElementById("itemsBody");
+      const rows = tbody.querySelectorAll("tr");
+      rows.forEach((row) => attachInputListeners(row));
+    }
+
+    // Generate PDF on submit
+    async function generatePDF(event) {
+      event.preventDefault();
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({
+        unit: "pt",
+        format: "a4",
+      });
+
+      const pageWidth = doc.internal.pageSize.getWidth();
+
+      // Centered X helper
+      function centerX(text, width = pageWidth) {
+        return width / 2;
+      }
+
+      // Header
+      doc.setFont("Oswald", "bold");
+      doc.setFontSize(24);
+      doc.setTextColor("#3b82f6"); // Tailwind blue-600
+      doc.text("ALONE FLYER'S LEARNING", centerX(), 60, { align: "center" });
+
+      doc.setFont("Roboto", "normal");
+      doc.setFontSize(12);
+      doc.setTextColor("#000000");
+      const headerText =
+        "Adress: #39, Malviya Colony, Guda Kallan\nSojat (306103)\nContact: 8696602827 / 9772474323";
+      const headerLines = doc.splitTextToSize(headerText, pageWidth - 80);
+      doc.text(headerLines, centerX(), 80, { align: "center" });
+
+      // Student info
+      const studentName = document.getElementById("studentName").value.trim();
+      const className = document.getElementById("class").value.trim();
+
+      // Format month range
+      const monthFromInput = document.getElementById("monthFrom");
+      const monthToInput = document.getElementById("monthTo");
+      let monthRangeText = "";
+      if (monthFromInput.value && monthToInput.value) {
+        const options = { day: "numeric", month: "long" };
+        const fromDate = new Date(monthFromInput.value);
+        const toDate = new Date(monthToInput.value);
+        if (fromDate <= toDate) {
+          const fromStr = fromDate.toLocaleDateString("en-US", options);
+          const toStr = toDate.toLocaleDateString("en-US", options);
+          monthRangeText = `${fromStr} to ${toStr}`;
+        } else {
+          monthRangeText = "Invalid date range";
+        }
+      }
+
+      doc.setTextColor("#2563eb"); // Tailwind blue-600
+      doc.setFontSize(14);
+      doc.text(`Name of Student : ${studentName}`, centerX(), 130, { align: "center" });
+      doc.text(`Class : ${className}    Month : ${monthRangeText}`, centerX(), 150, { align: "center" });
+
+      // Table headers
+      const startY = 170;
+      const rowHeight = 25;
+      const colWidths = [40, 180, 60, 60, 80];
+      const tableWidth = colWidths.reduce((a, b) => a + b, 0);
+      const startX = (pageWidth - tableWidth) / 2;
+      const headers = ["S.No", "Discription", "Month", "Fees", "Ammount"];
+
+      doc.setDrawColor("#2563eb");
+      doc.setFillColor(255, 255, 255);
+      doc.setTextColor("#2563eb");
+      doc.setFontSize(12);
+      doc.setFont("Roboto", "normal");
+
+      let x = startX;
+      let y = startY;
+
+      // Draw header row
+      headers.forEach((header, i) => {
+        doc.rect(x, y, colWidths[i], rowHeight, "S");
+        doc.text(header, x + colWidths[i] / 2, y + rowHeight / 2 + 4, {
+          align: "center",
+        });
+        x += colWidths[i];
+      });
+
+      // Draw rows
+      y += rowHeight;
+      const tbody = document.getElementById("itemsBody");
+      const rows = tbody.querySelectorAll("tr");
+      let totalAmount = 0;
+
+      rows.forEach((row, index) => {
+        x = startX;
+        const sno = row.querySelector('input[name="sno[]"]').value.trim();
+        const desc = row.querySelector('input[name="description[]"]').value.trim();
+        const month = row.querySelector('input[name="month[]"]').value.trim();
+        const fees = row.querySelector('input[name="fees[]"]').value.trim();
+        const amount = row.querySelector('input[name="amount[]"]').value.trim();
+
+        totalAmount += parseFloat(amount) || 0;
+
+        const rowData = [sno, desc, month, fees, amount];
+
+        rowData.forEach((data, i) => {
+          doc.rect(x, y, colWidths[i], rowHeight, "S");
+          // Use red color for entries
+          doc.setTextColor("#ff0000");
+          // Wrap text for description if too long
+          if (i === 1 && data.length > 25) {
+            const splitText = doc.splitTextToSize(data, colWidths[i] - 10);
+            doc.text(splitText, x + 5, y + 15);
+          } else {
+            doc.text(data, x + colWidths[i] / 2, y + rowHeight / 2 + 4, {
+              align: "center",
+            });
+          }
+          doc.setTextColor("#2563eb"); // reset to blue for next cell
+          x += colWidths[i];
+        });
+        y += rowHeight;
+      });
+
+      // Total row
+      x = startX;
+      doc.rect(x, y, colWidths[0] + colWidths[1] + colWidths[2], rowHeight, "S");
+      doc.rect(x + colWidths[0] + colWidths[1] + colWidths[2], y, colWidths[3], rowHeight, "S");
+      doc.rect(x + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3], y, colWidths[4], rowHeight, "S");
+
+      doc.setTextColor("#2563eb");
+      doc.setFont(undefined, "normal");
+      doc.text("Total", x + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] / 2, y + rowHeight / 2 + 4, {
+        align: "center",
+      });
+      doc.text(totalAmount.toFixed(2), x + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] / 2, y + rowHeight / 2 + 4, {
+        align: "center",
+      });
+
+      y += rowHeight;
+
+      // Discount row
+      const discountInput = document.getElementById("discount");
+      let discount = parseFloat(discountInput.value);
+      if (isNaN(discount) || discount < 0) discount = 0;
+      if (discount > 100) discount = 100;
+      const discountedAmount = totalAmount - (totalAmount * discount) / 100;
+
+      doc.rect(x, y, colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3], rowHeight, "S");
+      doc.rect(x + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3], y, colWidths[4], rowHeight, "S");
+
+      doc.setTextColor("#2563eb");
+      doc.setFont(undefined, "normal");
+      doc.text("Discount (%)", x + (colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3]) / 2, y + rowHeight / 2 + 4, {
+        align: "center",
+      });
+      doc.text(discount.toFixed(2), x + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] / 2, y + rowHeight / 2 + 4, {
+        align: "center",
+      });
+
+      y += rowHeight;
+
+      // Final total row
+      doc.rect(x, y, colWidths[0] + colWidths[1] + colWidths[2], rowHeight, "S");
+      doc.rect(x + colWidths[0] + colWidths[1] + colWidths[2], y, colWidths[3], rowHeight, "S");
+      doc.rect(x + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3], y, colWidths[4], rowHeight, "S");
+
+      doc.setFont(undefined, "bold");
+      doc.text("Final Total", x + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] / 2, y + rowHeight / 2 + 4, {
+        align: "center",
+      });
+      doc.text(discountedAmount.toFixed(2), x + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] / 2, y + rowHeight / 2 + 4, {
+        align: "center",
+      });
+
+      y += rowHeight + 10;
+
+      // Rupees in words
+      doc.setFontSize(12);
+      doc.setTextColor("#2563eb");
+      doc.setFont(undefined, "normal");
+      doc.text("Rupees in Words: " + numberToWords(Math.round(discountedAmount)), centerX(), y, { align: "center" });
+      y += 30;
+
+      // Comment
+      const comment = document.getElementById("comment").value.trim();
+      doc.text("Comment:", centerX(), y, { align: "center" });
+      y += 15;
+      doc.setTextColor("#000000");
+      const splitComment = doc.splitTextToSize(comment || "-", pageWidth - 80);
+      doc.text(splitComment, centerX(), y, { align: "center" });
+      y += splitComment.length * 15 + 20;
+
+      // Signature
+      doc.setTextColor("#2563eb");
+      doc.text("Signature", pageWidth - 80, y);
+
+      // Save PDF
+      doc.save(`AloneFlyersLearning_Bill_${studentName.replace(/\s+/g, "_") || "Student"}.pdf`);
+    }
+
+    // Initialize
+    document.addEventListener("DOMContentLoaded", () => {
+      attachListenersToAllRows();
+      updateAmounts();
+
+      document.getElementById("addRowBtn").addEventListener("click", () => {
+        addRow();
+        updateAmounts();
+      });
+
+      // Update amounts on input change for all inputs in table
+      document.getElementById("itemsTable").addEventListener("input", (e) => {
+        if (
+          e.target.name === "month[]" ||
+          e.target.name === "fees[]" ||
+          e.target.name === "sno[]"
+        ) {
+          updateAmounts();
+        }
+      });
+
+      // Update month count when date inputs change
+      document.getElementById("monthFrom").addEventListener("change", updateMonthCount);
+      document.getElementById("monthTo").addEventListener("change", updateMonthCount);
+
+      // Update final total when discount changes
+      document.getElementById("discount").addEventListener("input", () => {
+        updateFinalTotal();
+      });
+
+      document.getElementById("billForm").addEventListener("submit", generatePDF);
+    });
+  </script>
+</body>
+</html>
